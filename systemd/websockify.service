@@ -1,0 +1,9 @@
+[Unit]
+Description=websockify vnc proxy
+
+[Service]
+ExecStart=/usr/bin/websockify localhost:6080 localhost:5900
+
+[Install]
+WantedBy=multi-user.target
+
