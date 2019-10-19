@@ -2,10 +2,10 @@
 Viido projektori arvuti repo
 
 # Setup
-Assuming you're using some debian derivative
+Assuming you're using some debian derivative  
 else ... figure it out yourself
 
-$CLONE is your repo clone path
+$CLONE is your repo clone path  
 commands as root
 
 #### TODO: autostart
