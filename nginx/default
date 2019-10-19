@@ -82,7 +82,8 @@ server {
     location /vnc {
         alias /var/www/noVNC;
         autoindex on;
-        try_files $uri $uri/ index.html;
+        index vnc.html;
+        try_files $uri $uri/ vnc.html;
     }
 
     location /projektor/ {
