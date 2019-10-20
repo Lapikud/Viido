@@ -3,10 +3,10 @@ Viido projektori arvuti repo
 
 # Setup
 Assuming you're using some debian derivative  
-else ... figure it out yourself
+else ... figure it out yourself!
 
 $CLONE is your repo clone path  
-commands as root
+commands as #root
 
 #### TODO: autostart
 #
@@ -48,3 +48,7 @@ ln -s $CLONE/systemd/websockify.service /etc/systemd/system/
 systemctl enable websockify.service
 systemctl start websockify.service
 ```
+#
+Now, essential code seems to be symlinked and `git pull` keeps everything up-to-date..  
+  
+  And as always, this readme is under destruction :)
