@@ -52,9 +52,19 @@
                 display: flex;
                 flex-direction: row;
                 width: 100%;
+                flex-wrap: wrap;
+                user-select: none;
+                -webkit-user-select: none;  /* Chrome all / Safari all */
+                -moz-user-select: none;     /* Firefox all */
+                -ms-user-select: none;      /* IE 10+ */
+                user-select: none;          /* Likely future */
             }
 
             .radio-toolbar input[type="radio"] {
+              display: none;
+            }
+
+            .radio-toolbar input[type="button"] {
               display: none;
             }
 
@@ -72,10 +82,19 @@
                 transition-duration: 0.4s;
                 cursor: pointer;
                 flex: 1 0 auto;
-            	border: 2px solid #4CAF50;
-
+                border: 2px solid #4CAF50;
+                user-select: none;
             }
 
+            .rbnt{
+                width: 30%;
+                transition-duration: 0s;
+            }
+
+            .rbnt:active{
+                background-color: #4CAF50;
+                color: white;
+            }
             .radio-toolbar lable.red {
                 border: 2px solid #af4c4c;
             }
@@ -120,11 +139,6 @@
         <script>
             $(function()
             {
-                $.get("/projektor/status", function(data)
-                {
-                    $(".radio-toolbar input[type=radio][value=" + data + "]").prop("checked", true);
-                    $(".radio-toolbar input[type=radio]").prop("disabled", false);
-                });
 
                 $(".radio-toolbar input[type=radio]").change(function()
                 {
@@ -133,6 +147,12 @@
                     $.post("/projektor/status", {mode: $(this).val()}, function(data)
                     {
                         $("#loading").css("visibility", "hidden");
+                    });
+                });
+                 $(".radio-toolbar input[type=button]").click(function()
+                {
+                    $.post("/projektor/status", {mode: $(this).val()}, function(data)
+                    {
                     });
                 });
             });
@@ -148,15 +168,38 @@
         <h2 class="title">Projektori juhtimine</h2>
 
         <div class="radio-toolbar">
-            <input type="radio" id="radio1" name="radios" value="off" class="red" disabled>
+            <input type="radio" id="radio1" name="radios" value="off" class="red">
             <label for="radio1" class="red">OFF</label>
 
-            <input type="radio" id="radio2" name="radios" value="hdmi" disabled>
-            <label for="radio2">HDMI</label>
+            <input type="radio" id="radio2" name="radios" value="on">
+            <label for="radio2">ON</label>
         </div>
+        <h2 class="title">Sisendi juhtimine</h2>
 
+        <div class="radio-toolbar">
+
+            <input type="radio" id="r2" name="receiver" value="viido">
+            <label class="rbnt" for="r2">Viido</label>
+
+            <input type="radio" id="r3" name="receiver" value="steam">
+            <label class="rbnt" for="r3">Steam</label>
+
+            <input type="button" id="v1" name="receiver" value="volumeup">
+            <label class="rbnt" for="v1">Vol +</label>
+
+        </div>
+        <br>
+        <div class="radio-toolbar">
+            <input type="radio" id="r4" name="receiver" value="hdmi">
+            <label class="rbnt" for="r4">HDMI</label>
+
+            <input type="radio" id="r5" name="receiver" value="aux">
+            <label class="rbnt" for="r5">AUX</label>
+
+            <input type="button" id="v2" name="receiver" value="volumedown">
+            <label class="rbnt" for="v2">Vol -</label>
+        </div>
         <h2 class="title">Linux audio tunnel</h2>
-
         <pre>
 pacmd load-module module-tunnel-sink-new server=viido
 PULSE_SERVER=viido pavucontrol &

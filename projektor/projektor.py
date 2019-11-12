@@ -58,7 +58,7 @@ def off():
 
 class Projektor:
     def __init__(self, device):
-        self.ser = serial.Serial(device, 115200, timeout=1)
+        self.ser = serial.Serial(device, timeout=1)
 
     def close(self):
         self.ser.close()
@@ -99,7 +99,9 @@ class Projektor:
         self.ser.write(b"\r*pow=?#\r")
 
         while True:
+            #print (self.ser.read(999))
             c = self.ser.read(1)
+            #print(c);
             if c == b">":
                 self.ser.read(15)
                 status = self.ser.read(3)
@@ -121,6 +123,7 @@ if __name__ == "__main__":
     while True:
         if p.get_power() != "ON":
             print("POWER ON")
+            print(p.get_power())
             p.on()
 
         elif p.get_source() != "HDMI":

@@ -2,6 +2,7 @@
 Description=Projektori server
 
 [Service]
+Environment=PYTHONUNBUFFERED=1
 ExecStart=/opt/projektor/server.py
 
 [Install]
