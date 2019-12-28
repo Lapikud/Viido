@@ -1,0 +1,2 @@
+curl -X POST -F 'mode=volumedown' http://viido/projektor/status
+curl -X POST -F 'mode=volumeup' http://viido/projektor/status
