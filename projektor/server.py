@@ -34,9 +34,9 @@ def set_status():
     mode = request.forms.get("mode")
     print("SETTING STATUS TO", mode)
     if mode == "off":
-        send(b"\r*pow=off#\r")
+        send(b"\x02\x01\x00\x00\x00\x03")
     elif mode == "on":
-        send(b"\r*pow=on#\r")
+        send(b"\x02\x00\x00\x00\x00\x02")
     elif mode == "viido":
         send1(b"t")
     elif mode == "hdmi":
