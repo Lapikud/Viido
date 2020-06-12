@@ -24,6 +24,8 @@ ln -s $CLONE/nginx/default /etc/nginx/default
 ln -s $CLONE/projektor /opt/projektor
 apt install python3-serial python3-bottle
 ```
+Optionally, set keyboard hotkeys from projektor/hotkey_commands.txt
+
 #
 #### web
 ```
