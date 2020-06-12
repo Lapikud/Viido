@@ -105,7 +105,6 @@ set_freeze()
 	else
 		STATUS=`send_request 06 01 98 00 00 01 02 00`
 	fi
-	echo $STATUS
 }
 
 switch_freeze()
