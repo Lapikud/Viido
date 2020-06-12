@@ -60,10 +60,6 @@
                 user-select: none;          /* Likely future */
             }
 
-            .radio-toolbar input[type="radio"] {
-              display: none;
-            }
-
             .radio-toolbar input[type="button"] {
               display: none;
             }
@@ -99,17 +95,6 @@
                 border: 2px solid #af4c4c;
             }
 
-            .radio-toolbar input[type="radio"]:checked+label {
-              background-color: #4CAF50;
-              color: white;
-            }
-
-            .radio-toolbar input[type="radio"]:checked+label.red {
-              background-color: #af4c4c;
-              color: white;
-              border: 2px solid #af4c4c;
-            }
-
             .button1:hover {
                 background-color: #4CAF50;
                 color: white;
@@ -126,7 +111,8 @@
                 position: fixed;
                 width: 100%;
                 height: 100%;
-                background-image: url("loader.gif"), url("bg.png");
+                background-image: url("loader.gif");
+                background-color: rgba(102, 102, 102, 0.75);
                 background-position: center center, top;
                 background-repeat: no-repeat, repeat;
                 top: 0;
@@ -134,28 +120,24 @@
             }
         </style>
 
-        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-
         <script>
-            $(function()
+            function show_loading(visible)
             {
+                document.getElementById('loading').style.visibility = visible ? 'visible' : 'hidden';
+            }
 
-                $(".radio-toolbar input[type=radio]").change(function()
-                {
-                    $("#loading").css("visibility", "visible");
-
-                    $.post("/projektor/status", {mode: $(this).val()}, function(data)
-                    {
-                        $("#loading").css("visibility", "hidden");
-                    });
-                });
-                 $(".radio-toolbar input[type=button]").click(function()
-                {
-                    $.post("/projektor/status", {mode: $(this).val()}, function(data)
-                    {
-                    });
-                });
-            });
+            function send_mode(value)
+            {
+                show_loading(true);
+                var http = new XMLHttpRequest();
+                http.open('POST', '/projektor/status', true);
+                http.onreadystatechange = function() {
+                    if (http.readyState == 4 && http.status == 200) {
+                        show_loading(false);
+                    }
+                }
+                http.send('mode=' + value);
+            }
         </script>
     </head>
 
@@ -168,20 +150,20 @@
         <h2 class="title">Projektori juhtimine</h2>
 
         <div class="radio-toolbar">
-            <input type="radio" id="radio1" name="radios" value="off" class="red">
-            <label for="radio1" class="red">OFF</label>
+            <input type="button" id="power1" name="power" value="off">
+            <label for="power1" class="red">OFF</label>
 
-            <input type="radio" id="radio2" name="radios" value="on">
-            <label for="radio2">ON</label>
+            <input type="button" id="power2" name="power" value="on">
+            <label for="power2">ON</label>
         </div>
         <h2 class="title">Sisendi juhtimine</h2>
 
         <div class="radio-toolbar">
 
-            <input type="radio" id="r2" name="receiver" value="viido">
+            <input type="button" id="r2" name="receiver" value="viido">
             <label class="rbnt" for="r2">Viido</label>
 
-            <input type="radio" id="r3" name="receiver" value="steam">
+            <input type="button" id="r3" name="receiver" value="steam">
             <label class="rbnt" for="r3">Steam</label>
 
             <input type="button" id="v1" name="receiver" value="volumeup">
@@ -190,10 +172,10 @@
         </div>
         <br>
         <div class="radio-toolbar">
-            <input type="radio" id="r4" name="receiver" value="hdmi">
+            <input type="button" id="r4" name="receiver" value="hdmi">
             <label class="rbnt" for="r4">HDMI</label>
 
-            <input type="radio" id="r5" name="receiver" value="aux">
+            <input type="button" id="r5" name="receiver" value="aux">
             <label class="rbnt" for="r5">AUX</label>
 
             <input type="button" id="v2" name="receiver" value="volumedown">
@@ -207,5 +189,14 @@ pavucontrol &
         </code>
 
         <div id="loading"></div>
+        <script type="text/javascript">
+                var modebuttons = document.querySelectorAll('.radio-toolbar input');
+                for (var i = 0; i < modebuttons.length; i++)
+                {
+                    modebuttons[i].addEventListener('click', function(event) {
+                        send_mode(event.target.value);
+                    });
+                }
+        </script>
     </body>
 </html>
