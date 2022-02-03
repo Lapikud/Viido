@@ -1,202 +1,205 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <title>Viido</title>
+    <style>
+        body {
+            margin: 40px auto;
+            max-width: 650px;
+            line-height: 1.6;
+            font-size: 18px;
+            color: #444;
+            padding: 0 10px;
+            font-family: Helvetica, Arial, sans-serif;
+        }
 
-        <style>
+        button {
+            font-family: Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        a:any-link {
+            color: black;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-auto-columns: 1fr;
+            gap: 8px;
+            user-select: none;
+            -webkit-user-select: none; /* Chrome all / Safari all */
+            -moz-user-select: none; /* Firefox all */
+        }
+
+        .button-grid :nth-child(2) {
+            grid-column: 2;
+        }
+
+        .button-grid :nth-child(3) {
+            grid-column: 3;
+        }
+
+        .button-grid * {
+            background-color: transparent;
+            padding: 12px 0;
+            text-align: center;
+            text-decoration: none;
+            font-size: 32px;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border: 2px solid #4CAF50;
+            user-select: none;
+        }
+
+        .button-grid *:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .button-grid *.red {
+            border: 2px solid #af4c4c;
+        }
+
+        .button-grid *.red:hover {
+            background-color: #af4c4c;
+        }
+
+        .title {
+            text-align: center;
+            margin-top: 2em;
+        }
+
+        #loading {
+            visibility: hidden;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: url("loader.gif");
+            background-color: rgba(102, 102, 102, 0.75);
+            background-position: center center, top;
+            background-repeat: no-repeat, repeat;
+            top: 0;
+            left: 0;
+        }
+
+        @media screen and (prefers-color-scheme: dark) {
             body {
-                margin: 40px auto;
-                max-width: 650px;
-                line-height: 1.6;
-                font-size: 18px;
-                color: #444;
-                padding: 0 10px;
-                font-family: Helvetica, Arial, Sans-Serif;
+                background-color: #111;
+                color: #BBB;
             }
 
-            h1 {
-                text-align:center;
+            button {
+                color: #BBB;
             }
 
-            .button {
-                background-color: #4CAF50; /* Green */
-                border: none;
-                color: white;
-                padding: 16px 0;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 32px;
-                margin: 4px -2px;
-                -webkit-transition-duration: 0.4s; /* Safari */
-                transition-duration: 0.4s;
-                cursor: pointer;
-                width:100%;
+            a:any-link {
+                color: #BBB;
+            }
+        }
+    </style>
 
-            }
-            .button1 {
-                background-color: white;
-                color: black;
-                border: 2px solid #4CAF50;
-            }
+    <script>
+        function show_loading(visible) {
+            document.getElementById('loading').style.visibility = visible ? 'visible' : 'hidden';
+        }
 
-            .button2 {
-            	background-color: green;
-            	color: black;
-            	border: 2px solid #4CAF50;
-            	width:33%
-            }
-
-            .radio-toolbar {
-                display: flex;
-                flex-direction: row;
-                width: 100%;
-                flex-wrap: wrap;
-                user-select: none;
-                -webkit-user-select: none;  /* Chrome all / Safari all */
-                -moz-user-select: none;     /* Firefox all */
-                -ms-user-select: none;      /* IE 10+ */
-                user-select: none;          /* Likely future */
-            }
-
-            .radio-toolbar input[type="button"] {
-              display: none;
-            }
-
-            .radio-toolbar label {
-                background-color: white; /* RED */
-                border: none;
-                color: black;
-                padding: 12px 0;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 32px;
-                margin: 0 4px;
-                -webkit-transition-duration: 0.4s; /* Safari */
-                transition-duration: 0.4s;
-                cursor: pointer;
-                flex: 1 0 auto;
-                border: 2px solid #4CAF50;
-                user-select: none;
-            }
-
-            .rbnt{
-                width: 30%;
-                transition-duration: 0s;
-            }
-
-            .rbnt:active{
-                background-color: #4CAF50;
-                color: white;
-            }
-            .radio-toolbar lable.red {
-                border: 2px solid #af4c4c;
-            }
-
-            .button1:hover {
-                background-color: #4CAF50;
-                color: white;
-            }
-
-            .title {
-                text-align: center;
-                margin-top: 2em;
-            }
-
-            #loading
-            {
-                visibility: hidden;
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                background-image: url("loader.gif");
-                background-color: rgba(102, 102, 102, 0.75);
-                background-position: center center, top;
-                background-repeat: no-repeat, repeat;
-                top: 0;
-                left: 0;
-            }
-        </style>
-
-        <script>
-            function show_loading(visible)
-            {
-                document.getElementById('loading').style.visibility = visible ? 'visible' : 'hidden';
-            }
-
-            function send_mode(value)
-            {
-                show_loading(true);
-                var http = new XMLHttpRequest();
-                http.open('POST', '/projektor/status', true);
-                http.onreadystatechange = function() {
-                    if (http.readyState == 4 && http.status == 200) {
-                        show_loading(false);
-                    }
+        function send_mode(value) {
+            show_loading(true);
+            const http = new XMLHttpRequest();
+            http.open('POST', '/projektor/status', true);
+            http.onreadystatechange = function () {
+                if (http.readyState === 4 && http.status === 200) {
+                    show_loading(false);
                 }
-                http.send('mode=' + value);
             }
-        </script>
-    </head>
+            http.send('mode=' + value);
+        }
+    </script>
+</head>
 
-    <body>
-        <h1>Viido</h1>
+<body>
+<h1>Viido</h1>
+<div class="button-grid">
+    <a class="button" href="vnc">VNC remote desktop</a>
+</div>
 
-        <a href="iris" class="button button1">Mopidy music</a><br />
-        <a href="vnc" class="button button1">VNC remote desktop</a><br />
+<h2 class="title">Projektori juhtimine</h2>
 
-        <h2 class="title">Projektori juhtimine</h2>
+<div class="button-grid">
+    <button class="red" name="projektor" value="off">OFF</button>
+    <button name="projektor" value="on">ON</button>
+</div>
+<p class="center"><span id="projector_lamp_hours"></span><span id="projector_lamp_remaining"></span></p>
 
-        <div class="radio-toolbar">
-            <input type="button" id="power1" name="power" value="off">
-            <label for="power1" class="red">OFF</label>
+<h2 class="title">Sisendi juhtimine</h2>
+<div class="button-grid">
+    <button name="projektor" value="viido">Viido</button>
+    <button name="projektor" value="steam">Steam</button>
+    <button name="projektor" value="volumeup">Vol +</button>
+    <button name="projektor" value="hdmi">HDMI</button>
+    <button name="projektor" value="aux">AUX</button>
+    <button name="projektor" value="volumedown">Vol -</button>
+</div>
 
-            <input type="button" id="power2" name="power" value="on">
-            <label for="power2">ON</label>
-        </div>
-        <h2 class="title">Sisendi juhtimine</h2>
+<h2 class="title"></h2>
+<div class="button-grid">
+    <button id="audio_tunnel_toggle">Linux audio tunnel</button>
+</div>
+<code id="audio_tunnel">
+    pacmd load-module module-tunnel-sink-new server=viido
+    PULSE_SERVER=viido pavucontrol &
+    pavucontrol &
+</code>
 
-        <div class="radio-toolbar">
+<div id="loading"></div>
+<script type="text/javascript">
+    const audio_tunnel = document.getElementById('audio_tunnel');
+    audio_tunnel.hidden = true;
+    document.getElementById('audio_tunnel_toggle').addEventListener('click', function () {
+        audio_tunnel.hidden = !audio_tunnel.hidden;
+    });
 
-            <input type="button" id="r2" name="receiver" value="viido">
-            <label class="rbnt" for="r2">Viido</label>
+    const modeButtons = document.querySelectorAll('button[name="projektor"]');
+    for (let i = 0; i < modeButtons.length; i++) {
+        modeButtons[i].addEventListener('click', function (event) {
+            send_mode(event.target.value);
+        });
+    }
 
-            <input type="button" id="r3" name="receiver" value="steam">
-            <label class="rbnt" for="r3">Steam</label>
-
-            <input type="button" id="v1" name="receiver" value="volumeup">
-            <label class="rbnt" for="v1">Vol +</label>
-
-        </div>
-        <br>
-        <div class="radio-toolbar">
-            <input type="button" id="r4" name="receiver" value="hdmi">
-            <label class="rbnt" for="r4">HDMI</label>
-
-            <input type="button" id="r5" name="receiver" value="aux">
-            <label class="rbnt" for="r5">AUX</label>
-
-            <input type="button" id="v2" name="receiver" value="volumedown">
-            <label class="rbnt" for="v2">Vol -</label>
-        </div>
-        <h2 class="title">Linux audio tunnel</h2>
-        <code>
-pacmd load-module module-tunnel-sink-new server=viido
-PULSE_SERVER=viido pavucontrol &
-pavucontrol &
-        </code>
-
-        <div id="loading"></div>
-        <script type="text/javascript">
-                var modebuttons = document.querySelectorAll('.radio-toolbar input');
-                for (var i = 0; i < modebuttons.length; i++)
-                {
-                    modebuttons[i].addEventListener('click', function(event) {
-                        send_mode(event.target.value);
-                    });
+    function query_projector(request_string, closure) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/projector/pjctrl.cgi.elf?D=' + request_string, true)
+        xhr.overrideMimeType('text/plain');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                let data = JSON.parse(xhr.response.replace(',]', ']'));
+                if ((data[0] & 0x80) === 0) {
+                    closure(data);
                 }
-        </script>
-    </body>
+            }
+        };
+        xhr.send();
+    }
+
+    query_projector('%07%03%96%00%00%02%00%01H', function (data) {
+        const used = ((data[10] << 24) | (data[9] << 16) | (data[8] << 8) | data[7]) / 3600;
+        document.getElementById('projector_lamp_hours').innerText =
+            'Lambi läbisõit ' + Math.round(used) + 'h. ';
+    });
+    query_projector('%07%03%96%00%00%02%00%04H', function (data) {
+        document.getElementById('projector_lamp_remaining').innerText = 'Alles jäänud ' + data[7] + '%';
+    });
+</script>
+</body>
 </html>
