@@ -152,8 +152,11 @@
     <button name="projektor" value="volumedown">Vol -</button>
 </div>
 
-<h2 class="title">Linux audio tunnel</h2>
-<code>
+<h2 class="title"></h2>
+<div class="button-grid">
+    <button id="audio_tunnel_toggle">Linux audio tunnel</button>
+</div>
+<code id="audio_tunnel">
     pacmd load-module module-tunnel-sink-new server=viido
     PULSE_SERVER=viido pavucontrol &
     pavucontrol &
@@ -161,6 +164,12 @@
 
 <div id="loading"></div>
 <script type="text/javascript">
+    const audio_tunnel = document.getElementById('audio_tunnel');
+    audio_tunnel.hidden = true;
+    document.getElementById('audio_tunnel_toggle').addEventListener('click', function () {
+        audio_tunnel.hidden = !audio_tunnel.hidden;
+    });
+
     const modeButtons = document.querySelectorAll('button[name="projektor"]');
     for (let i = 0; i < modeButtons.length; i++) {
         modeButtons[i].addEventListener('click', function (event) {
