@@ -28,6 +28,10 @@
             color: black;
         }
 
+        .center {
+            text-align: center;
+        }
+
         .button-grid {
             display: grid;
             grid-auto-columns: 1fr;
@@ -136,6 +140,7 @@
     <button class="red" name="projektor" value="off">OFF</button>
     <button name="projektor" value="on">ON</button>
 </div>
+<p class="center"><span id="projector_lamp_hours"></span><span id="projector_lamp_remaining"></span></p>
 
 <h2 class="title">Sisendi juhtimine</h2>
 <div class="button-grid">
@@ -162,6 +167,30 @@
             send_mode(event.target.value);
         });
     }
+
+    function query_projector(request_string, closure) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', '/projector/pjctrl.cgi.elf?D=' + request_string, true)
+        xhr.overrideMimeType('text/plain');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                let data = JSON.parse(xhr.response.replace(',]', ']'));
+                if ((data[0] & 0x80) === 0) {
+                    closure(data);
+                }
+            }
+        };
+        xhr.send();
+    }
+
+    query_projector('%07%03%96%00%00%02%00%01H', function (data) {
+        const used = ((data[10] << 24) | (data[9] << 16) | (data[8] << 8) | data[7]) / 3600;
+        document.getElementById('projector_lamp_hours').innerText =
+            'Lambi läbisõit ' + Math.round(used) + 'h. ';
+    });
+    query_projector('%07%03%96%00%00%02%00%04H', function (data) {
+        document.getElementById('projector_lamp_remaining').innerText = 'Alles jäänud ' + data[7] + '%';
+    });
 </script>
 </body>
 </html>
