@@ -101,5 +101,9 @@ server {
     location /projector/ {
         proxy_pass http://projektor.kontor.lapikud.ee/cgi-bin/;
     }
+
+    location = /basic_status {
+	    stub_status;
+    }
 }
 
