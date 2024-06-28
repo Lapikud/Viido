@@ -157,9 +157,7 @@
     <button id="audio_tunnel_toggle">Linux audio tunnel</button>
 </div>
 <code id="audio_tunnel">
-    pacmd load-module module-tunnel-sink-new server=viido
-    PULSE_SERVER=viido pavucontrol &
-    pavucontrol &
+    pactl load-module module-tunnel-sink server=tcp:viido
 </code>
 
 <div id="loading"></div>
