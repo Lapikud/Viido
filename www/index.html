@@ -125,6 +125,18 @@
             }
             http.send('mode=' + value);
         }
+
+        // kopeerime lõikelauale
+        function toClip(content) {
+            let tempArea = document.createElement('textarea');
+            tempArea.value = content;
+            document.body.appendChild(tempArea);
+            tempArea.select();
+
+            // Teame teame, see on deprecated, aga muud meetodid ei toimi ilma HTTPS'ita
+            document.execCommand('copy');
+            document.body.removeChild(tempArea);
+        }
     </script>
 </head>
 
@@ -154,11 +166,9 @@
 
 <h2 class="title"></h2>
 <div class="button-grid">
-    <button id="audio_tunnel_toggle">Linux audio tunnel</button>
+    <button id="audio_tunnel_toggle">Linux audio tunnel (clipboard copy)</button>
 </div>
-<code id="audio_tunnel">
-    pactl load-module module-tunnel-sink server=tcp:viido
-</code>
+<code id="audio_tunnel">pactl load-module module-tunnel-sink server=tcp:viido</code>
 
 <div id="loading"></div>
 <script type="text/javascript">
@@ -166,6 +176,7 @@
     audio_tunnel.hidden = true;
     document.getElementById('audio_tunnel_toggle').addEventListener('click', function () {
         audio_tunnel.hidden = !audio_tunnel.hidden;
+        toClip(audio_tunnel.innerText);
     });
 
     const modeButtons = document.querySelectorAll('button[name="projektor"]');
